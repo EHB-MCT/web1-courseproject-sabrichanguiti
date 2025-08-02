@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>GTA V Pause Menu - Trevor CV</title>
+  <title>Curriculum Vitae: Trevor Philips</title>
   <style>
     @font-face {
       font-family: gta;
@@ -60,7 +60,7 @@
     }
     .top-menu-toggle {
       display: none;
-      font-size: 24px;
+      font-size: 20px;
       background: rgba(0,0,0,0.6);
       color: white;
       border: none;
@@ -71,7 +71,7 @@
       top: 5px;
       left: 10px;
       z-index: 1000;
-      border-radius: 4px;
+      border-radius: 0px;
     }
     .top-menu {
       display: flex;
@@ -147,7 +147,7 @@
       user-select: none;
     }
 
-    /* MOBILE STYLES */
+    /* Mobile Version */
     @media (max-width: 768px) {
       .menu-body {
         flex-direction: column;
@@ -162,7 +162,7 @@
         overflow: hidden;
       }
       .top-menu.show {
-        max-height: 500px; /* big enough to show all tabs */
+        max-height: 500px;
       }
       .sidebar {
         width: 100%;
@@ -181,7 +181,7 @@
   </style>
 </head>
 <body>
-  <button class="top-menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰
+  <button class="top-menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰ Menu
 
   </button>
   <div class="menu">
@@ -204,7 +204,6 @@
     </div>
   </div>
 
-  <!-- Audio elements -->
   <audio id="backgroundAudio" src="audio/pause.ogg" loop></audio>
   <audio id="clickSound" src="audio/cursor.wav" preload="auto"></audio>
   <audio id="enterSound" src="audio/enter.wav" preload="auto"></audio>
@@ -214,7 +213,7 @@
     const backgroundAudio = document.getElementById('backgroundAudio');
     const clickSound = document.getElementById('clickSound');
 
-    // Play background music on first user interaction (click or keydown)
+    // Play background music on first user interaction (couldn't autoplay due to browser restrictions)
     function playBackgroundMusic() {
       backgroundAudio.play().catch(() => {});
       document.body.removeEventListener('click', playBackgroundMusic);
@@ -418,9 +417,7 @@
 
     function updateContent() {
       if (itemsWithImages.has(currentSidebarItem)) {
-        // Show text + image for these items
         const text = contentTextData[currentSidebarItem] || '';
-        // Load images from /images/trevor/ folder as requested
         const imageSrc = `images/trevor/${currentSidebarItem.toLowerCase().replace(/ /g, '_')}.webp`;
         content.innerHTML = `
           <h2>${currentSidebarItem}</h2>
@@ -428,14 +425,12 @@
           <img class="section-img" src="${imageSrc}" alt="${currentSidebarItem}" />
         `;
       } else if (currentTab === 'contacts' && characterImagePaths[currentSidebarItem]) {
-        // Show contact info with character image
         content.innerHTML = `
           <h2>${currentSidebarItem}</h2>
           <p>${contentTextData[currentSidebarItem] || ''}</p>
           <img class="contact-img" src="${characterImagePaths[currentSidebarItem]}" alt="${currentSidebarItem}" />
         `;
       } else {
-        // Just text content
         content.innerHTML = `
           <h2>${currentSidebarItem}</h2>
           <p>${contentTextData[currentSidebarItem] || ''}</p>
@@ -510,7 +505,6 @@ document.addEventListener('touchend', (e) => {
   }
 }, false);
 
-// Unified input handler
 function processKonamiInput(inputCode, isSwipe = false) {
   const now = Date.now();
 
@@ -544,7 +538,7 @@ function triggerEasterEgg() {
   if (easterEggTriggered) return;
   easterEggTriggered = true;
 
-  const totalVideos = 5; // Adjust to your real count
+  const totalVideos = 5; 
   const randomNum = Math.floor(Math.random() * totalVideos) + 1;
   const videoSrc = `switchsceneseasteregg/vid${randomNum}.webm`;
 
