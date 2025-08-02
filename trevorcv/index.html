@@ -212,6 +212,11 @@
   <script>
     const backgroundAudio = document.getElementById('backgroundAudio');
     const clickSound = document.getElementById('clickSound');
+    const audios = document.querySelectorAll('audio');
+  audios.forEach(audio => {
+    audio.volume = 0.1; // 10%
+  });
+
 
     // Play background music on first user interaction (couldn't autoplay due to browser restrictions)
     function playBackgroundMusic() {
