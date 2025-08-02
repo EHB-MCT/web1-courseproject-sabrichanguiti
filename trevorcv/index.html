@@ -39,7 +39,7 @@
       font-family: gtaheader;
     }
     .cv-title {
-      font-size: 30px;
+      font-size: 45px;
       text-shadow: 1px 1px 3px black;
     }
     .top-info {
@@ -64,11 +64,11 @@
       background: rgba(0,0,0,0.6);
       color: white;
       border: none;
-      padding: 10px;
+      padding: 5px;
       cursor: pointer;
       user-select: none;
       position: fixed;
-      top: 10px;
+      top: 5px;
       left: 10px;
       z-index: 1000;
       border-radius: 4px;
@@ -181,7 +181,9 @@
   </style>
 </head>
 <body>
-  <button class="top-menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰ Menu</button>
+  <button class="top-menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰
+
+  </button>
   <div class="menu">
     <div class="top-info-wrapper">
       <div class="cv-title">Curriculum Vitae</div>
@@ -191,7 +193,7 @@
           <div id="currentDateTime" aria-live="polite"></div>
           <div>$108</div>
         </div>
-        <img src="images/char_trevor.png" alt="Trevor" />
+        <img src="images/trevor/char_trevor.webp" alt="Trevor" />
       </div>
     </div>
 
@@ -204,7 +206,7 @@
 
   <!-- Audio elements -->
   <audio id="backgroundAudio" src="audio/pause.ogg" loop></audio>
-  <audio id="clickSound" src="audio/0x114D1C55.wav" preload="auto"></audio>
+  <audio id="clickSound" src="audio/cursor.wav" preload="auto"></audio>
   <audio id="enterSound" src="audio/enter.wav" preload="auto"></audio>
   <audio id="outSound" src="audio/out.wav" preload="auto"></audio>
 
@@ -238,73 +240,90 @@
 
     // Content text data
     const contentTextData = {
-      Background: `Trevor is a career criminal and former bank robber with a complicated past, who later founded his own company, Trevor Philips Enterprises, operating with drug dealing and weapon smuggling in Blaine County. He is friends with Ron Jakowski, Wade Hebert, and Chef, who work for his company, as well as the oldest and best friend of Michael, whom he believed to be dead for almost a decade after he faked his death to retire from the criminal life. Trevor is known to have a generally reckless and very aggressive behavior, but he is also very loyal and deeply respects all those close to him. Trevor's story focuses on how his actions have consequences on both himself and his friends, and him coming to terms with Michael's past actions. Trevor later also befriends the third protagonist, Franklin, becoming somewhat of a mentor figure to him.`,
+      Background: `
+      <p>I, Trevor Philips am a career criminal and former bank robber who later founded my own company, Trevor Philips Enterprises, specialized in drug trafficking and weapons smuggling in Blaine County.</p>
+      <p>Even though I am a generally reckless and very aggressive person, I am very loyal and deeply respect those close to me.</p>
+      <p>Before founding my company, I was part of a heist crew in North Yankton along with three other people until Winter of 2004.</p>
+      <p>Over the years, I have met and befriended multiple business associates all over the state of San Andreas. Some with who I am still very close.</p>`,
 
-      Personality: `Trevor is known for his psychotic and unpredictable nature, prone to violent outbursts and cruelty.
-      Despite this, he is fiercely loyal to those he cares about, showing a twisted but genuine friendship.`,
+      Personality: `
+      <p>Some might say that I am psychotic and unpredictable and prone to violent outbursts but this might be a little exaggerated.</p>
+      <p>I am fiercely loyal to those I care about. Especially my closest associates: Ron, Wade and Chef.</p>`,
 
-      Lifestyle: `Trevor lives a chaotic life in a trailer in Sandy Shores, running his own criminal enterprise.
-      He engages in drug manufacturing, arms smuggling, and other illegal activities.`,
+      Lifestyle: `
+      <p>Trevor lives a chaotic life in a trailer in Sandy Shores, running his own criminal enterprise.</p>
+      <p>I engage in drug manufacturing, arms smuggling, and other illegal activities to further help the American economy!</p>
+      <p>Contrary to popular belief, no, I do not "Kill dudes, eat dudes, and fuck dudes."</p>`,
 
-      Flying: `Trevor is an expert pilot with a military background, able to fly various aircraft with great skill.`,
+      Flying: `
+      <p>Having served in the Canadian Airforce, I am able to fly various aircraft with great skill.</p>
+      <p>As a matter of fact, I even own my own private airfield in Sandy Shores, Blane County.</p>`,
 
-      Shooting: `He is highly proficient with firearms, showing exceptional accuracy and a ruthless approach.`,
+      Shooting: `
+      <p>My time in the military has given me experience with firearms.</p>
+      <p>I am highly proficient with firearms, showing exceptional accuracy and a ruthless approach.</p>`,
 
-      Driving: `Trevor drives aggressively and recklessly, often using speed and force to accomplish his objectives.`,
+      Driving: `
+      <p>I might drive aggressively and recklessly, but hey, Los Santos traffic would make anyone insane, eh?.</p>`,
 
-      'Rage Ability': `Trevor's special ability allows him to enter a rage mode where he takes less damage and deals more damage with melee and firearms.`,
+      'Rage Ability': `
+      <p>When under pressure, I enter rage mode where I am less sensitive to pain and feel strong enough to take on multiple people at once.</p>
+      <p>This might be a side effect from Amphetamine consumption but atleast I am in the best shape of my life!</p>`,
 
-      'Air Force Discharge': `Trevor was dishonorably discharged from the Canadian Air Force for erratic behavior and insubordination.`,
+      'Air Force Discharge': `
+      <p>I have unfortunately been dishonorably discharged from the Canadian Air Force for erratic behavior and insubordination.</p>`,
 
-      'Criminal Activities': `He has been involved in numerous criminal enterprises, including drug trafficking, robbery, and murder.`,
+      'Criminal Activities': `
+      <p>As stated, I am involved in numerous criminal enterprises, including drug trafficking, robbery, and more that I cannot share at this time.</p>`,
 
-      'Notable Missions': `Trevor participates in high-profile heists and missions throughout Los Santos and Blaine County.`,
+      'Notable Missions': `
+      <p>I've participated in high-profile heists and missions throughout Los Santos, Blaine County and North Yankton.</p>`,
 
      'Michael De Santa': `
-<p>Michael is a former bank robber and career criminal who faked his death to retire and live a peaceful life with his family in Los Santos.</p>
+<p>Michael is a former bank robber and career criminal who faked his death to retire and live a "peaceful" life with his family in Los Santos.</p>
 <p>However, his unhealthy relationship with them takes its toll, and he soon gets pulled back into his criminal life, forcing him to return to his old ways.</p>
-<p>Michael's story centers around how his seemingly idyllic and halcyon lifestyle is halted as his past demons and morally dubious lifestyle choices come back to haunt him.</p>
 <p>Meanwhile, his midlife crisis pushes him to his ultimate snapping point, and he becomes determined to achieve something more with his life while also attempting to escape his past, become a free man, and start a new life with his family.</p>
-<p>Michael is an old friend of fellow protagonist Trevor, and, early on in the storyline, he also befriends Franklin and becomes a mentor figure to him.</p>
+<p>Michael is an old friend of me, he also befriended another person, Franklin and becomes a mentor figure to him.</p>
 <p>He is the husband of Amanda and the father of Jimmy and Tracey.</p>`,
 
 'Franklin Clinton': `
 <p>Franklin was born and lived his entire life in Los Santos.</p>
 <p>He became a gangbanger at a young age and joined the Chamberlain Gangster Families alongside his best friend Lamar Davis, committing various small crimes for a living.</p>
 <p>They and their fellow CGF homies from Forum Drive would later form the independent Forum Gangsters to stay away from CGF's "retro gangster" nonsense.</p>
-<p>Franklin's story revolves around his desire to become something more and make something of himself, which he succeeds when he meets Michael, who becomes a mentor and father figure to him and recruits him in all of his robberies and various jobs for other criminals, leading to Franklin's eventual success and wealth.</p>
-<p>Franklin also befriends the third protagonist, Trevor, who, although not as close to him as Michael, still becomes a mentor to him.</p>`,
+<p>Franklin's story revolves around his desire to become something more and make something of himself, which he succeeds when he meets Michael, who becomes a mentor and father figure to him and recruits him in all of his robberies and various jobs for other criminals, leading to Franklin's eventual success and wealth.</p>`,
 
 'Lester Crest': `
-<p>At an unknown point in time, Lester moved out to the Midwest, where he met and became affiliated with bank robbers Michael Townley and Trevor Philips, and became a regular member of their heist crews since the start of their partnership, working mostly as a planner and information scout.</p>
-<p>During this time, Lester likely told both of them about the Union Depository, a superbank in Los Santos where the government keeps their gold reserve, leading to the three of them to come up with potential schemes on how to rob the place.</p>
+<p>At an unknown point in time, Lester moved out to the Midwest, where he met and became affiliated with Michael and me, and became a regular member of our heist crew since the start of our partnership, working mostly as a planner and information scout.</p>
 <p>In 2004, Lester refused to participate in robbing a cash storage facility in Ludendorff, North Yankton, believing it was a bad idea.</p>
-<p>His suspicions are later confirmed when he discovers that, during this same heist, Michael was apparently gunned down and another associate, Brad, was subsequently arrested.</p>
+<p>His suspicions are later confirmed when he discovers that, during this same heist, Michael was apparently gunned down and another associate, Brad, was subsequently arrested (which ended up being a load of horseshit considering the fact that Michael ended up living in a big mansion while Brad got buried in Michael's grave).</p>
 <p>Following the botched heist, Lester moved to Los Santos and purchased a garment factory in La Mesa, along with several other properties to use as fronts for his various operations.</p>
 <p>During this time, Lester investigated the Ludendorff heist and learned that Michael was alive but had faked his death and moved to Los Santos as well, having previously made a deal with FIB agent Dave Norton.</p>
 <p>However, as Michael never revealed that Lester was part of the crew, Lester in turn never revealed Michael's secret.</p>
-<p>Lester also lost contact with Trevor, but secretly kept tabs on his and Michael's whereabouts.</p>`,
+<p>Lester also lost contact with me, but secretly kept tabs on me and Michael's whereabouts.</p>`,
 
 'Ron Jakowski': `
 <p>Ron Jakowski previously worked as an accountant.</p>
-<p>He was happily married for 12 years before he met Trevor Philips.</p>
-<p>Trevor convinced him that his wife was only holding him back in life and scared her when he threatened dismemberment.</p>
+<p>He was happily married for 12 years before he met me.</p>
+<p>I convinced him that his wife was only holding him back in life and scared her when I threatened dismemberment.</p>
 <p>Ron was kicked out by his wife and they divorced, with Ron deep in debt due to paying settlement fees to her.</p>
-<p>He ended up becoming Trevor's "best friend" and moved into a trailer next door to him in Sandy Shores, San Andreas.</p>
-<p>He began to obsess over conspiracy theories and work for Trevor's company, Trevor Philips Enterprises.</p>
+<p>He ended up becoming my "best friend" and moved into a trailer next door in Sandy Shores.</p>
+<p>He began to obsess over conspiracy theories and work for my company, Trevor Philips Enterprises.</p>
 <p>At some point, he began hosting Blaine County Radio's Community Hour.</p>
 <p>As part of his conspiracy theories, he worked with drone-jamming technology.</p>`,
 
 'Wade Hebert': `
 <p>In 2012, while Wade was on his way to "the gathering" with Daisy Bell, Kush-Chronic and several others, they stopped at Sandy Shores to buy some drugs.</p>
-<p>Wade last saw his friends driving to a quarry with a local dealer named Trevor Philips, who likely killed them, unbeknownst to Wade, who thought his friends simply abandoned him.</p>
-<p>Trevor proceeded to look after Wade and at one point sodomized him with a hockey stick.</p>`,
+<p>Wade last saw his friends driving to a quarry with me, who then had an "unfortunate accident", unbeknownst to Wade, who thought his friends simply abandoned him.</p>
+<p>I proceeded to look after Wade and at one point sodomized him with a hockey stick.</p>`,
 
-      'Mental State': `Trevor shows signs of psychosis, bipolar tendencies, and extreme violence, often putting himself and others in danger.`,
+      'Mental State': `
+      <p>My psychiatric report shows signs of psychosis, bipolar tendencies, and extreme violence. Which could also be exaggerated</p>`,
 
-      'Police Record': `Trevor has a long history of arrests, but manages to avoid long-term imprisonment through violence and intimidation.`,
+      'Police Record': `
+      <p>I have a long history of arrests, but manage to avoid long-term imprisonment through violence and intimidation.</p>`,
 
-      'Last Known Location': `Trevor is often found at his trailer in Sandy Shores or roaming the desert and Blaine County.`,
+      'Last Known Location': `
+      <p>I often hangout at my trailer in Sandy Shores but also stay over at the Vanilla Unicorn strip club in Los Santos of which I am the owner.</p>`,
     };
 
     // Sidebar items that show images below text
@@ -320,11 +339,11 @@
 
     // Contact character images
     const characterImagePaths = {
-      'Michael De Santa': 'images/characters/michael1.jpg',
-      'Franklin Clinton': 'images/characters/franklin1.jpg',
-      'Lester Crest': 'images/characters/lester1.jpg',
-      'Ron Jakowski': 'images/characters/ron1.jpg',
-      'Wade Hebert': 'images/characters/wade1.jpg'
+      'Michael De Santa': 'images/characters/michael1.webp',
+      'Franklin Clinton': 'images/characters/franklin1.webp',
+      'Lester Crest': 'images/characters/lester1.webp',
+      'Ron Jakowski': 'images/characters/ron1.webp',
+      'Wade Hebert': 'images/characters/wade1.webp'
     };
 
     let currentTab = 'overview';
@@ -402,7 +421,7 @@
         // Show text + image for these items
         const text = contentTextData[currentSidebarItem] || '';
         // Load images from /images/trevor/ folder as requested
-        const imageSrc = `images/trevor/${currentSidebarItem.toLowerCase().replace(/ /g, '_')}.jpg`;
+        const imageSrc = `images/trevor/${currentSidebarItem.toLowerCase().replace(/ /g, '_')}.webp`;
         content.innerHTML = `
           <h2>${currentSidebarItem}</h2>
           <p>${text}</p>
@@ -435,12 +454,125 @@
 
     // Update date and time every minute
     function updateDateTime() {
-      const now = new Date();
-      const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-      document.getElementById('currentDateTime').textContent = now.toLocaleString(undefined, options);
-    }
-    updateDateTime();
-    setInterval(updateDateTime, 60000);
+  const now = new Date();
+
+  // Get weekday in English (e.g., SATURDAY)
+  const day = now.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase();
+
+  // Format time in 24-hour format with leading zeros
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+
+  // Combine day and time
+  document.getElementById('currentDateTime').textContent = `${day} ${hours}:${minutes}`;
+}
+
+updateDateTime();
+setInterval(updateDateTime, 60000);
   </script>
+  <script>
+const konamiCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // keyboard
+const konamiCodeSwipeOnly = [38, 38, 40, 40, 37, 39, 37, 39]; // mobile (no B, A)
+let konamiIndex = 0;
+let konamiStartTime = null;
+let easterEggTriggered = false;
+
+// Keyboard support
+document.addEventListener('keydown', (e) => {
+  processKonamiInput(e.keyCode);
+});
+
+// Mobile swipe detection
+let touchStartX = 0;
+let touchStartY = 0;
+
+document.addEventListener('touchstart', (e) => {
+  const touch = e.changedTouches[0];
+  touchStartX = touch.clientX;
+  touchStartY = touch.clientY;
+}, false);
+
+document.addEventListener('touchend', (e) => {
+  const touch = e.changedTouches[0];
+  const dx = touch.clientX - touchStartX;
+  const dy = touch.clientY - touchStartY;
+  const absX = Math.abs(dx);
+  const absY = Math.abs(dy);
+  let directionCode = null;
+
+  if (Math.max(absX, absY) > 30) { // Minimum swipe distance
+    if (absX > absY) {
+      directionCode = dx > 0 ? 39 : 37; // → : ←
+    } else {
+      directionCode = dy > 0 ? 40 : 38; // ↓ : ↑
+    }
+    processKonamiInput(directionCode, true);
+  }
+}, false);
+
+// Unified input handler
+function processKonamiInput(inputCode, isSwipe = false) {
+  const now = Date.now();
+
+  if (konamiIndex === 0) {
+    konamiStartTime = now;
+  }
+
+  if (now - konamiStartTime > 3000) {
+    konamiIndex = 0;
+    konamiStartTime = now;
+  }
+
+  const expectedCode = isSwipe ? konamiCodeSwipeOnly[konamiIndex] : konamiCode[konamiIndex];
+
+  if (inputCode === expectedCode) {
+    konamiIndex++;
+    const completedCode = isSwipe ? konamiCodeSwipeOnly : konamiCode;
+    if (konamiIndex === completedCode.length) {
+      triggerEasterEgg();
+      konamiIndex = 0;
+      konamiStartTime = null;
+    }
+  } else {
+    konamiIndex = 0;
+    konamiStartTime = null;
+  }
+}
+
+// Same Easter Egg trigger (no window close)
+function triggerEasterEgg() {
+  if (easterEggTriggered) return;
+  easterEggTriggered = true;
+
+  const totalVideos = 5; // Adjust to your real count
+  const randomNum = Math.floor(Math.random() * totalVideos) + 1;
+  const videoSrc = `switchsceneseasteregg/vid${randomNum}.mp4`;
+
+  const overlay = document.createElement('div');
+  overlay.style.position = 'fixed';
+  overlay.style.top = '0';
+  overlay.style.left = '0';
+  overlay.style.width = '100vw';
+  overlay.style.height = '100vh';
+  overlay.style.zIndex = '999999';
+  overlay.style.backgroundColor = 'black';
+
+  const video = document.createElement('video');
+  video.src = videoSrc;
+  video.autoplay = true;
+  video.controls = false;
+  video.style.width = '100%';
+  video.style.height = '100%';
+  video.style.objectFit = 'cover';
+
+  overlay.appendChild(video);
+  document.body.appendChild(overlay);
+
+  video.addEventListener('ended', () => {
+    document.body.removeChild(overlay);
+    easterEggTriggered = false;
+  });
+}
+</script>
 </body>
 </html>
