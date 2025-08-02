@@ -76,7 +76,7 @@
       left: 10px;
       z-index: 1000;
       border-radius: 0px;
-      font-family: gta;
+      font-family: gtaheader;
 
     }
     .top-menu {
@@ -416,11 +416,13 @@
         div.addEventListener('click', () => {
           if (currentTab !== tab) {
             clickSound.play();
+            enterSound.play();
             currentTab = tab;
             currentSidebarItem = sidebarData[currentTab][0];
             updateTopMenu();
             updateSidebar();
             updateContent();
+            ToggleMenu();
           }
         });
         div.addEventListener('keydown', (e) => {
@@ -452,6 +454,7 @@
             currentSidebarItem = item;
             updateSidebar();
             updateContent();
+            ToggleMenu();
           }
         });
         div.addEventListener('keydown', (e) => {
@@ -488,8 +491,15 @@
     }
 
     function toggleMenu() {
-      topMenu.classList.toggle('show');
-    }
+  topMenu.classList.toggle('show');
+
+  if (topMenu.classList.contains('show')) {
+    enterSound.play();  // Menu opened
+  } else {
+    outSound.play();    // Menu closed
+  }
+}
+
 
     // Initialize menu
     updateTopMenu();
