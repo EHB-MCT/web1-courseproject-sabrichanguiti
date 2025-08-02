@@ -30,12 +30,16 @@
       height: 100%;
       display: flex;
       flex-direction: column;
+      padding-left: 200px;
+      padding-right: 200px;
+      padding-top: 50px;
+      padding-bottom: 100px;
     }
     .top-info-wrapper {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
-      padding: 20px;
+      padding: 10px;
       font-family: gtaheader;
     }
     .cv-title {
@@ -56,7 +60,7 @@
       width: 48px;
       height: 48px;
       object-fit: cover;
-      border-radius: 4px;
+      border-radius: 0px;
     }
     .top-menu-toggle {
       display: none;
@@ -72,6 +76,8 @@
       left: 10px;
       z-index: 1000;
       border-radius: 0px;
+      font-family: gta;
+
     }
     .top-menu {
       display: flex;
@@ -153,31 +159,45 @@
       background: rgba(0, 0, 0, 0.6);
       overflow-y: auto;
       color: white;
-      border-radius: 6px;
+      border-radius: 0px;
+    }
+    .content h2 {
+      font-size: 50px;
+      margin-bottom: 10px;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.582);
     }
     .content img.contact-img,
     .content img.section-img {
       margin-top: 15px;
       max-width: 300px;
-      border: 2px solid white;
-      border-radius: 5px;
+      border-radius: 0px;
       display: block;
       user-select: none;
     }
 
     /* Mobile Version */
     @media (max-width: 768px) {
+      .menu {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 0px;
+    }
       .menu-body {
         flex-direction: column;
+        margin-top: 0px;
       }
       .top-menu-toggle {
         display: block;
+        position:fixed;
+        top: 10px;
       }
       .top-menu {
         flex-direction: column;
         margin: 10px 10px 0 10px;
         max-height: 0;
         overflow: hidden;
+        margin-top: 0px;
       }
       .top-menu.show {
         max-height: 500px;
@@ -186,6 +206,7 @@
         width: 100%;
         flex-direction: row;
         overflow-x: auto;
+        margin-top: 0px;
       }
       .sidebar div {
         flex: 1 0 auto;
@@ -195,11 +216,16 @@
         padding: 10px;
         border-radius: 0;
       }
+      .top-info-wrapper {
+        padding: 10px;
+        margin-top: 20px;
+      }
+
     }
   </style>
 </head>
 <body>
-  <button class="top-menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰ Menu
+  <button class="top-menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰ MENU
 
   </button>
   <div class="menu">
