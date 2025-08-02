@@ -1,1 +1,381 @@
-<!-- nothing here -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Interactive Squares</title>
+  <style>
+    @font-face {
+      font-family: 'GTAHeader';
+      src: url('./font/gtaheader.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'GTAFont';
+      src: url('./font/gta.ttf') format('truetype');
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+      background: #000;
+      font-family: 'GTAHeader', sans-serif;
+      color: white;
+      overflow: hidden;
+    }
+
+    #start-screen {
+      position: fixed;
+      inset: 0;
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.5rem;
+      cursor: pointer;
+      z-index: 1000;
+      transition: opacity 0.3s ease;
+    }
+
+    #container {
+      display: none;
+      height: 100vh;
+      width: 100vw;
+      padding: 1vw;
+      gap: 1vw;
+      display: flex;
+    }
+
+    @media (min-width: 769px) {
+      #container {
+        padding: 3vw;
+      }
+    }
+
+    @media (max-width: 768px) {
+      #container {
+        flex-direction: column;
+        padding: 6px;
+        gap: 6px;
+      }
+
+      #legend,
+      #credits {
+        display: none !important;
+      }
+    }
+
+    .square {
+      position: relative;
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+      padding: 1rem;
+      color: white;
+      text-decoration: none;
+      font-size: 4rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+      cursor: pointer;
+      border: 4px solid transparent;
+      transition: border 0.3s ease;
+      outline-offset: 3px;
+    }
+
+    .square:hover,
+    .square:focus-visible {
+      border: 4px solid white;
+      outline: none;
+    }
+
+    .image-layer {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      transform: scale(1.1);
+      transition: transform 0.4s ease;
+      z-index: 0;
+    }
+
+    .square:hover .image-layer,
+    .square:focus-visible .image-layer {
+      transform: scale(1);
+    }
+
+    .square1 .image-layer {
+      background-image: url('images/trevorcv.png');
+    }
+
+    .square2 .image-layer {
+      background-image: url('images/wiki.png');
+    }
+
+    .gradient-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .square:hover .gradient-overlay,
+    .square:focus-visible .gradient-overlay {
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      .gradient-overlay {
+        opacity: 1;
+      }
+    }
+
+    .content-layer {
+      position: relative;
+      z-index: 2;
+    }
+
+    .subtitle {
+      font-family: 'GTAFont', sans-serif;
+      font-size: 1.25rem;
+      color: white;
+      margin-top: 0.25rem;
+      opacity: 1;
+      transition: opacity 0.4s ease;
+    }
+
+    #mute-button {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: black;
+      border: 2px solid white;
+      border-radius: 0;
+      color: white;
+      padding: 0.4rem 0.6rem;
+      cursor: pointer;
+      font-family: 'GTAHeader', sans-serif;
+      font-size: 1rem;
+      z-index: 1100;
+      user-select: none;
+      transition: background-color 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    #mute-button:hover,
+    #mute-button:focus-visible {
+      background: #222;
+      outline: none;
+    }
+
+    #mute-button img {
+      width: 20px;
+      height: 20px;
+    }
+
+    #legend {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      color: white;
+      font-family: 'GTAFont', sans-serif;
+      background: rgba(0,0,0,0.5);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      user-select: none;
+      z-index: 1200;
+    }
+
+    #legend div {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    #legend img {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="start-screen" role="button" tabindex="0">Click to Start</div>
+
+  <audio id="bgm" loop></audio>
+  <audio id="cursor-sound" src="./audio/cursor.wav" preload="auto"></audio>
+  <audio id="enter-sound" src="./audio/enter.wav" preload="auto"></audio>
+
+  <button id="mute-button" aria-pressed="false">
+    <img src="images/ui/esc.png" alt="ESC icon" />
+    Mute
+  </button>
+
+  <div id="container">
+    <a href="trevorcv/index.html" class="square square1" tabindex="0">
+      <div class="image-layer"></div>
+      <div class="gradient-overlay"></div>
+      <div class="content-layer">
+        Trevor's CV
+        <div class="subtitle">
+          This page is an introduction to the character Trevor Philips from Grand Theft Auto V
+        </div>
+      </div>
+    </a>
+
+    <a href="https://gta.fandom.com/wiki/Trevor_Philips" class="square square2" tabindex="0">
+      <div class="image-layer"></div>
+      <div class="gradient-overlay"></div>
+      <div class="content-layer">
+        Sources
+        <div class="subtitle">
+          Find out more about the character on this page
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div id="legend" aria-label="Keyboard navigation instructions">
+    <div>
+      <img src="images/ui/arrow-left.png" alt="Left" />
+      <img src="images/ui/arrow-right.png" alt="Right" />
+      <span>Select</span>
+    </div>
+    <div>
+      <img src="images/ui/enter.png" alt="Enter key" />
+      <span>Enter</span>
+    </div>
+  </div>
+
+  <div id="credits" style="position: fixed; bottom: 1rem; left: 1rem; color: white; font-family: 'GTAFont', sans-serif; font-size: 0.875rem; z-index: 1200;">
+    Made by Sabri Changuiti for Erasmushogeschool Brussel (2025)
+  </div>
+
+  <script>
+    const startScreen = document.getElementById('start-screen');
+    const container = document.getElementById('container');
+    const bgm = document.getElementById('bgm');
+    const cursorSound = document.getElementById('cursor-sound');
+    const enterSound = document.getElementById('enter-sound');
+    const muteButton = document.getElementById('mute-button');
+    const squares = Array.from(document.querySelectorAll('.square'));
+
+    cursorSound.volume = 0.1;
+    enterSound.volume = 0.1;
+    bgm.volume = 0.1;
+
+    const bgTracks = [
+      './audio/Flight School Trouble.mp3',
+      './audio/Flight School Twilight.mp3'
+    ];
+    const selectedTrack = bgTracks[Math.floor(Math.random() * bgTracks.length)];
+    bgm.src = selectedTrack;
+
+    function startApp() {
+      bgm.play().catch(() => {});
+      startScreen.style.opacity = '0';
+      setTimeout(() => {
+        startScreen.style.display = 'none';
+        container.style.display = 'flex';
+        document.body.style.overflow = 'auto';
+        if (squares.length) squares[0].focus();
+      }, 300);
+    }
+
+    startScreen.addEventListener('click', startApp);
+    startScreen.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        startApp();
+      }
+    });
+
+    function toggleMute() {
+      const isMuted = bgm.muted;
+      bgm.muted = !isMuted;
+      cursorSound.muted = !isMuted;
+      enterSound.muted = !isMuted;
+      muteButton.setAttribute('aria-pressed', bgm.muted);
+      muteButton.textContent = '';
+      const escIcon = document.createElement('img');
+      escIcon.src = 'images/ui/esc.png';
+      escIcon.alt = 'ESC icon';
+      muteButton.appendChild(escIcon);
+      muteButton.appendChild(document.createTextNode(bgm.muted ? 'Unmute' : 'Mute'));
+    }
+
+    muteButton.addEventListener('click', toggleMute);
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        toggleMute();
+      }
+    });
+
+    squares.forEach((square, index) => {
+      square.addEventListener('mouseenter', () => {
+        if (!bgm.muted) {
+          cursorSound.currentTime = 0;
+          cursorSound.play();
+        }
+      });
+
+      square.addEventListener('click', e => {
+        e.preventDefault();
+        if (!bgm.muted) {
+          cursorSound.currentTime = 0;
+          enterSound.currentTime = 0;
+          cursorSound.play();
+          enterSound.play();
+        }
+        const href = square.getAttribute('href');
+        setTimeout(() => {
+          window.location.href = href;
+        }, 200);
+      });
+
+      square.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          if (!bgm.muted) {
+            cursorSound.currentTime = 0;
+            enterSound.currentTime = 0;
+            cursorSound.play();
+            enterSound.play();
+          }
+          const href = square.getAttribute('href');
+          setTimeout(() => {
+            window.location.href = href;
+          }, 200);
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+          e.preventDefault();
+          let newIndex = e.key === 'ArrowLeft'
+            ? (index - 1 + squares.length) % squares.length
+            : (index + 1) % squares.length;
+          squares[newIndex].focus();
+          if (!bgm.muted) {
+            cursorSound.currentTime = 0;
+            cursorSound.play();
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

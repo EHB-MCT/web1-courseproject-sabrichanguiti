@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GTA V Pause Menu - Trevor CV</title>
+  <style>
+    @font-face {
+      font-family: gta;
+      src: url(font/gta.ttf);
+    }
+    @font-face {
+      font-family: gtaheader;
+      src: url(font/gtaheader.ttf);
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: url('images/blurred_bg.jpg') center center no-repeat;
+      background-size: cover;
+      font-family: gta, Arial, sans-serif;
+      color: white;
+    }
+    .menu {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .top-info-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding: 20px;
+      font-family: gtaheader;
+    }
+    .cv-title {
+      font-size: 30px;
+      text-shadow: 1px 1px 3px black;
+    }
+    .top-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 18px;
+      text-shadow: 1px 1px 3px black;
+    }
+    .top-info-text > div {
+      line-height: 1.2;
+    }
+    .top-info img {
+      width: 48px;
+      height: 48px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+    .top-menu-toggle {
+      display: none;
+      font-size: 24px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      user-select: none;
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+      border-radius: 4px;
+    }
+    .top-menu {
+      display: flex;
+      justify-content: space-between;
+      font-family: gta;
+      font-size: 18px;
+      margin: 10px;
+      gap: 5px;
+      user-select: none;
+      transition: max-height 0.3s ease;
+    }
+    .top-menu div {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      border-top: 5px solid transparent;
+      background-color: rgba(0, 0, 0, 0.6);
+      transition: background-color 0.3s, color 0.3s, border-top-color 0.3s;
+      color: white;
+      outline: none;
+    }
+    .top-menu div.active {
+      background-color: white;
+      color: black;
+      border-top: 5px solid #F09E71;
+    }
+    .menu-body {
+      flex: 1;
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+      overflow: hidden;
+    }
+    .sidebar {
+      width: 250px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 16px;
+      font-family: gta;
+    }
+    .sidebar div {
+      padding: 10px;
+      background: rgba(0,0,0,0.6);
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      color: white;
+      user-select: none;
+      outline: none;
+    }
+    .sidebar div.selected {
+      background-color: white;
+      color: black;
+    }
+    .content {
+      flex: 1;
+      padding: 20px;
+      font-family: gta;
+      font-size: 16px;
+      background: rgba(0, 0, 0, 0.6);
+      overflow-y: auto;
+      color: white;
+      border-radius: 6px;
+    }
+    .content img.contact-img,
+    .content img.section-img {
+      margin-top: 15px;
+      max-width: 300px;
+      border: 2px solid white;
+      border-radius: 5px;
+      display: block;
+      user-select: none;
+    }
+
+    /* MOBILE STYLES */
+    @media (max-width: 768px) {
+      .menu-body {
+        flex-direction: column;
+      }
+      .top-menu-toggle {
+        display: block;
+      }
+      .top-menu {
+        flex-direction: column;
+        margin: 10px 10px 0 10px;
+        max-height: 0;
+        overflow: hidden;
+      }
+      .top-menu.show {
+        max-height: 500px; /* big enough to show all tabs */
+      }
+      .sidebar {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+      }
+      .sidebar div {
+        flex: 1 0 auto;
+        text-align: center;
+      }
+      .content {
+        padding: 10px;
+        border-radius: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button class="top-menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰ Menu</button>
+  <div class="menu">
+    <div class="top-info-wrapper">
+      <div class="cv-title">Curriculum Vitae</div>
+      <div class="top-info">
+        <div class="top-info-text">
+          <div>TREVOR</div>
+          <div id="currentDateTime" aria-live="polite"></div>
+          <div>$108</div>
+        </div>
+        <img src="images/char_trevor.png" alt="Trevor" />
+      </div>
+    </div>
+
+    <nav class="top-menu" id="topMenu" role="tablist" tabindex="0" aria-label="Main menu"></nav>
+    <div class="menu-body">
+      <nav class="sidebar" id="sidebar" role="list" tabindex="0" aria-label="Sidebar menu"></nav>
+      <main class="content" id="content" tabindex="0" role="region" aria-live="polite" aria-label="Content area"></main>
+    </div>
+  </div>
+
+  <!-- Audio elements -->
+  <audio id="backgroundAudio" src="audio/pause.ogg" loop></audio>
+  <audio id="clickSound" src="audio/0x114D1C55.wav" preload="auto"></audio>
+  <audio id="enterSound" src="audio/enter.wav" preload="auto"></audio>
+  <audio id="outSound" src="audio/out.wav" preload="auto"></audio>
+
+  <script>
+    const backgroundAudio = document.getElementById('backgroundAudio');
+    const clickSound = document.getElementById('clickSound');
+
+    // Play background music on first user interaction (click or keydown)
+    function playBackgroundMusic() {
+      backgroundAudio.play().catch(() => {});
+      document.body.removeEventListener('click', playBackgroundMusic);
+      document.body.removeEventListener('keydown', playBackgroundMusic);
+    }
+    document.body.addEventListener('click', playBackgroundMusic);
+    document.body.addEventListener('keydown', playBackgroundMusic);
+
+    const topMenu = document.getElementById('topMenu');
+    const sidebar = document.getElementById('sidebar');
+    const content = document.getElementById('content');
+
+    const tabs = ['overview', 'skills', 'work', 'contacts', 'notes'];
+    const labels = ['OVERVIEW', 'SKILLS', 'WORK HISTORY', 'CONTACTS', 'NOTES'];
+
+    const sidebarData = {
+      overview: ['Background', 'Personality', 'Lifestyle'],
+      skills: ['Flying', 'Shooting', 'Driving', 'Rage Ability'],
+      work: ['Air Force Discharge', 'Criminal Activities', 'Notable Missions'],
+      contacts: ['Michael De Santa', 'Franklin Clinton', 'Lester Crest', 'Ron Jakowski', 'Wade Hebert'],
+      notes: ['Mental State', 'Police Record', 'Last Known Location'],
+    };
+
+    // Content text data
+    const contentTextData = {
+      Background: `Trevor is a career criminal and former bank robber with a complicated past, who later founded his own company, Trevor Philips Enterprises, operating with drug dealing and weapon smuggling in Blaine County. He is friends with Ron Jakowski, Wade Hebert, and Chef, who work for his company, as well as the oldest and best friend of Michael, whom he believed to be dead for almost a decade after he faked his death to retire from the criminal life. Trevor is known to have a generally reckless and very aggressive behavior, but he is also very loyal and deeply respects all those close to him. Trevor's story focuses on how his actions have consequences on both himself and his friends, and him coming to terms with Michael's past actions. Trevor later also befriends the third protagonist, Franklin, becoming somewhat of a mentor figure to him.`,
+
+      Personality: `Trevor is known for his psychotic and unpredictable nature, prone to violent outbursts and cruelty.
+      Despite this, he is fiercely loyal to those he cares about, showing a twisted but genuine friendship.`,
+
+      Lifestyle: `Trevor lives a chaotic life in a trailer in Sandy Shores, running his own criminal enterprise.
+      He engages in drug manufacturing, arms smuggling, and other illegal activities.`,
+
+      Flying: `Trevor is an expert pilot with a military background, able to fly various aircraft with great skill.`,
+
+      Shooting: `He is highly proficient with firearms, showing exceptional accuracy and a ruthless approach.`,
+
+      Driving: `Trevor drives aggressively and recklessly, often using speed and force to accomplish his objectives.`,
+
+      'Rage Ability': `Trevor's special ability allows him to enter a rage mode where he takes less damage and deals more damage with melee and firearms.`,
+
+      'Air Force Discharge': `Trevor was dishonorably discharged from the Canadian Air Force for erratic behavior and insubordination.`,
+
+      'Criminal Activities': `He has been involved in numerous criminal enterprises, including drug trafficking, robbery, and murder.`,
+
+      'Notable Missions': `Trevor participates in high-profile heists and missions throughout Los Santos and Blaine County.`,
+
+     'Michael De Santa': `
+<p>Michael is a former bank robber and career criminal who faked his death to retire and live a peaceful life with his family in Los Santos.</p>
+<p>However, his unhealthy relationship with them takes its toll, and he soon gets pulled back into his criminal life, forcing him to return to his old ways.</p>
+<p>Michael's story centers around how his seemingly idyllic and halcyon lifestyle is halted as his past demons and morally dubious lifestyle choices come back to haunt him.</p>
+<p>Meanwhile, his midlife crisis pushes him to his ultimate snapping point, and he becomes determined to achieve something more with his life while also attempting to escape his past, become a free man, and start a new life with his family.</p>
+<p>Michael is an old friend of fellow protagonist Trevor, and, early on in the storyline, he also befriends Franklin and becomes a mentor figure to him.</p>
+<p>He is the husband of Amanda and the father of Jimmy and Tracey.</p>`,
+
+'Franklin Clinton': `
+<p>Franklin was born and lived his entire life in Los Santos.</p>
+<p>He became a gangbanger at a young age and joined the Chamberlain Gangster Families alongside his best friend Lamar Davis, committing various small crimes for a living.</p>
+<p>They and their fellow CGF homies from Forum Drive would later form the independent Forum Gangsters to stay away from CGF's "retro gangster" nonsense.</p>
+<p>Franklin's story revolves around his desire to become something more and make something of himself, which he succeeds when he meets Michael, who becomes a mentor and father figure to him and recruits him in all of his robberies and various jobs for other criminals, leading to Franklin's eventual success and wealth.</p>
+<p>Franklin also befriends the third protagonist, Trevor, who, although not as close to him as Michael, still becomes a mentor to him.</p>`,
+
+'Lester Crest': `
+<p>At an unknown point in time, Lester moved out to the Midwest, where he met and became affiliated with bank robbers Michael Townley and Trevor Philips, and became a regular member of their heist crews since the start of their partnership, working mostly as a planner and information scout.</p>
+<p>During this time, Lester likely told both of them about the Union Depository, a superbank in Los Santos where the government keeps their gold reserve, leading to the three of them to come up with potential schemes on how to rob the place.</p>
+<p>In 2004, Lester refused to participate in robbing a cash storage facility in Ludendorff, North Yankton, believing it was a bad idea.</p>
+<p>His suspicions are later confirmed when he discovers that, during this same heist, Michael was apparently gunned down and another associate, Brad, was subsequently arrested.</p>
+<p>Following the botched heist, Lester moved to Los Santos and purchased a garment factory in La Mesa, along with several other properties to use as fronts for his various operations.</p>
+<p>During this time, Lester investigated the Ludendorff heist and learned that Michael was alive but had faked his death and moved to Los Santos as well, having previously made a deal with FIB agent Dave Norton.</p>
+<p>However, as Michael never revealed that Lester was part of the crew, Lester in turn never revealed Michael's secret.</p>
+<p>Lester also lost contact with Trevor, but secretly kept tabs on his and Michael's whereabouts.</p>`,
+
+'Ron Jakowski': `
+<p>Ron Jakowski previously worked as an accountant.</p>
+<p>He was happily married for 12 years before he met Trevor Philips.</p>
+<p>Trevor convinced him that his wife was only holding him back in life and scared her when he threatened dismemberment.</p>
+<p>Ron was kicked out by his wife and they divorced, with Ron deep in debt due to paying settlement fees to her.</p>
+<p>He ended up becoming Trevor's "best friend" and moved into a trailer next door to him in Sandy Shores, San Andreas.</p>
+<p>He began to obsess over conspiracy theories and work for Trevor's company, Trevor Philips Enterprises.</p>
+<p>At some point, he began hosting Blaine County Radio's Community Hour.</p>
+<p>As part of his conspiracy theories, he worked with drone-jamming technology.</p>`,
+
+'Wade Hebert': `
+<p>In 2012, while Wade was on his way to "the gathering" with Daisy Bell, Kush-Chronic and several others, they stopped at Sandy Shores to buy some drugs.</p>
+<p>Wade last saw his friends driving to a quarry with a local dealer named Trevor Philips, who likely killed them, unbeknownst to Wade, who thought his friends simply abandoned him.</p>
+<p>Trevor proceeded to look after Wade and at one point sodomized him with a hockey stick.</p>`,
+
+      'Mental State': `Trevor shows signs of psychosis, bipolar tendencies, and extreme violence, often putting himself and others in danger.`,
+
+      'Police Record': `Trevor has a long history of arrests, but manages to avoid long-term imprisonment through violence and intimidation.`,
+
+      'Last Known Location': `Trevor is often found at his trailer in Sandy Shores or roaming the desert and Blaine County.`,
+    };
+
+    // Sidebar items that show images below text
+    const itemsWithImages = new Set([
+      'Background',
+      'Personality',
+      'Lifestyle',
+      'Flying',
+      'Shooting',
+      'Driving',
+      'Rage Ability'
+    ]);
+
+    // Contact character images
+    const characterImagePaths = {
+      'Michael De Santa': 'images/characters/michael1.jpg',
+      'Franklin Clinton': 'images/characters/franklin1.jpg',
+      'Lester Crest': 'images/characters/lester1.jpg',
+      'Ron Jakowski': 'images/characters/ron1.jpg',
+      'Wade Hebert': 'images/characters/wade1.jpg'
+    };
+
+    let currentTab = 'overview';
+    let currentSidebarItem = sidebarData[currentTab][0];
+
+    function updateTopMenu() {
+      topMenu.innerHTML = '';
+      tabs.forEach((tab) => {
+        const div = document.createElement('div');
+        div.textContent = labels[tabs.indexOf(tab)];
+        div.dataset.tab = tab;
+        div.setAttribute('role', 'tab');
+        div.setAttribute('tabindex', '0');
+        if (tab === currentTab) {
+          div.classList.add('active');
+          div.setAttribute('aria-selected', 'true');
+          div.setAttribute('aria-current', 'page');
+        } else {
+          div.setAttribute('aria-selected', 'false');
+          div.removeAttribute('aria-current');
+        }
+        div.addEventListener('click', () => {
+          if (currentTab !== tab) {
+            clickSound.play();
+            currentTab = tab;
+            currentSidebarItem = sidebarData[currentTab][0];
+            updateTopMenu();
+            updateSidebar();
+            updateContent();
+          }
+        });
+        div.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            div.click();
+          }
+        });
+        topMenu.appendChild(div);
+      });
+    }
+
+    function updateSidebar() {
+      sidebar.innerHTML = '';
+      sidebarData[currentTab].forEach((item) => {
+        const div = document.createElement('div');
+        div.textContent = item;
+        div.setAttribute('role', 'listitem');
+        div.setAttribute('tabindex', '0');
+        if (item === currentSidebarItem) {
+          div.classList.add('selected');
+          div.setAttribute('aria-current', 'true');
+        } else {
+          div.removeAttribute('aria-current');
+        }
+        div.addEventListener('click', () => {
+          if (currentSidebarItem !== item) {
+            clickSound.play();
+            currentSidebarItem = item;
+            updateSidebar();
+            updateContent();
+          }
+        });
+        div.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            div.click();
+          }
+        });
+        sidebar.appendChild(div);
+      });
+    }
+
+    function updateContent() {
+      if (itemsWithImages.has(currentSidebarItem)) {
+        // Show text + image for these items
+        const text = contentTextData[currentSidebarItem] || '';
+        // Load images from /images/trevor/ folder as requested
+        const imageSrc = `images/trevor/${currentSidebarItem.toLowerCase().replace(/ /g, '_')}.jpg`;
+        content.innerHTML = `
+          <h2>${currentSidebarItem}</h2>
+          <p>${text}</p>
+          <img class="section-img" src="${imageSrc}" alt="${currentSidebarItem}" />
+        `;
+      } else if (currentTab === 'contacts' && characterImagePaths[currentSidebarItem]) {
+        // Show contact info with character image
+        content.innerHTML = `
+          <h2>${currentSidebarItem}</h2>
+          <p>${contentTextData[currentSidebarItem] || ''}</p>
+          <img class="contact-img" src="${characterImagePaths[currentSidebarItem]}" alt="${currentSidebarItem}" />
+        `;
+      } else {
+        // Just text content
+        content.innerHTML = `
+          <h2>${currentSidebarItem}</h2>
+          <p>${contentTextData[currentSidebarItem] || ''}</p>
+        `;
+      }
+    }
+
+    function toggleMenu() {
+      topMenu.classList.toggle('show');
+    }
+
+    // Initialize menu
+    updateTopMenu();
+    updateSidebar();
+    updateContent();
+
+    // Update date and time every minute
+    function updateDateTime() {
+      const now = new Date();
+      const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+      document.getElementById('currentDateTime').textContent = now.toLocaleString(undefined, options);
+    }
+    updateDateTime();
+    setInterval(updateDateTime, 60000);
+  </script>
+</body>
+</html>
